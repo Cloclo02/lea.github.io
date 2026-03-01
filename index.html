@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Une question importante 💕</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fce8f0;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      border-radius: 28px;
+      padding: 36px 60px;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(220, 100, 140, 0.15);
+      max-width: 380px;
+      width: 90%;
+    }
+
+    .bear {
+      font-size: 4rem;
+      display: block;
+      margin-bottom: 12px;
+      animation: bounce 1.6s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: #d63384;
+      margin-bottom: 28px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .btn {
+      width: 160px;
+      padding: 13px 0;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+
+    #btn-oui {
+      background: #ff6eb4;
+      color: white;
+      box-shadow: 0 4px 16px rgba(255, 100, 160, 0.35);
+    }
+    #btn-oui:hover { transform: scale(1.07); }
+
+    #btn-non {
+      background: #f0f0f0;
+      color: #aaa;
+    }
+
+    #success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+    #success .big-heart {
+      font-size: 5rem;
+      animation: heartBeat 0.8s ease-in-out infinite alternate;
+    }
+    @keyframes heartBeat {
+      from { transform: scale(1);    }
+      to   { transform: scale(1.15); }
+    }
+    #success h2 { font-size: 2.2rem; color: #d63384; margin: 14px 0 0; }
+
+    .confetti {
+      position: fixed;
+      top: -10px;
+      font-size: 1.4rem;
+      animation: confettiFall linear forwards;
+      z-index: 999;
+      pointer-events: none;
+    }
+    @keyframes confettiFall {
+      0%   { transform: translateY(0) rotate(0deg);       opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+
+  <div id="main-screen">
+    <span class="bear">🐻</span>
+    <h1>Veux-tu être ma copine ? 💕</h1>
+    <div class="buttons">
+      <button class="btn" id="btn-oui" onclick="onOui()">🥰 Oui !</button>
+      <button class="btn" id="btn-non" onmouseover="moveNon()" onclick="moveNon()">Non</button>
+    </div>
+  </div>
+
+  <div id="success">
+    <span class="big-heart">❤️</span>
+    <h2>mimi 🎉</h2>
+  </div>
+
+</div>
+
+<script>
+  let attempts = 0;
+
+  function moveNon() {
+    attempts++;
+    const btn = document.getElementById('btn-non');
+    const margin = 80;
+    const maxX = window.innerWidth  - btn.offsetWidth  - margin;
+    const maxY = window.innerHeight - btn.offsetHeight - margin;
+
+    btn.style.position = 'fixed';
+    btn.style.left = (margin + Math.random() * (maxX - margin)) + 'px';
+    btn.style.top  = (margin + Math.random() * (maxY - margin)) + 'px';
+    btn.style.zIndex = 10;
+
+    const oui = document.getElementById('btn-oui');
+    oui.style.transform = `scale(${Math.min(1 + attempts * 0.08, 1.6)})`;
+  }
+
+  function onOui() {
+    document.getElementById('main-screen').style.display = 'none';
+    document.getElementById('success').style.display = 'flex';
+    launchConfetti();
+  }
+
+  function launchConfetti() {
+    const items = ['❤️','💕','🌸','✨','🎉','💖','🥰'];
+    for (let i = 0; i < 60; i++) {
+      setTimeout(() => {
+        const c = document.createElement('span');
+        c.className = 'confetti';
+        c.textContent = items[Math.floor(Math.random() * items.length)];
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+        c.style.animationDuration = (2 + Math.random() * 3) + 's';
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 5000);
+      }, i * 80);
+    }
+  }
+</script>
+
+</body>
+</html>
